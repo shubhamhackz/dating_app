@@ -11,39 +11,71 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 350,
-              decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(64),
-                      bottomRight: Radius.circular(64),
-                    ),
-                  ),
-                  gradient: LinearGradient(
-                    colors: <Color>[
-                      Color(0xFFFD0E42),
-                      Color(0xFFC30F31),
-                    ],
-                  )),
-              child: const Padding(
-                padding: EdgeInsets.only(top: 46.0, left: 20.0),
-                child: Text(
-                  'Discover',
-                  style: TextStyle(
-                    fontFamily: 'Nunito',
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                    fontSize: 36,
-                  ),
-                ),
-              ),
-            ),
-            const CardStacksWidget(),
+          children: const [
+            BackgroudCurveWidget(),
+            CardStacksWidget(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class BackgroudCurveWidget extends StatelessWidget {
+  const BackgroudCurveWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 350,
+      decoration: const ShapeDecoration(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(64),
+            bottomRight: Radius.circular(64),
+          ),
+        ),
+        gradient: LinearGradient(
+          colors: <Color>[
+            Color(0xFFFD0E42),
+            Color(0xFFC30F31),
+          ],
+        ),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.only(top: 46.0, left: 20.0),
+        child: Text(
+          'Discover',
+          style: TextStyle(
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w800,
+            color: Colors.white,
+            fontSize: 36,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ActionButtonWidget extends StatelessWidget {
+  const ActionButtonWidget(
+      {Key? key, required this.onPressed, required this.icon})
+      : super(key: key);
+  final VoidCallback onPressed;
+  final Icon icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      shape: const CircleBorder(),
+      child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35.0),
+        ),
+        child: IconButton(onPressed: onPressed, icon: icon),
       ),
     );
   }
@@ -178,49 +210,25 @@ class _CardStacksWidgetState extends State<CardStacksWidget>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Material(
-                  shape: const CircleBorder(),
-                  child: Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35.0),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        swipeNotifier.value = Swipe.left;
-                        // setState(() {
-                        //   swipe = Swipe.left;
-                        // });
-                        _animationController.forward();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.grey,
-                      ),
-                    ),
+                ActionButtonWidget(
+                  onPressed: () {
+                    swipeNotifier.value = Swipe.left;
+                    _animationController.forward();
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.grey,
                   ),
                 ),
                 const SizedBox(width: 20),
-                Material(
-                  shape: const CircleBorder(),
-                  child: Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35.0),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        swipeNotifier.value = Swipe.right;
-                        // setState(() {
-                        //   swipe = Swipe.right;
-                        // });
-                        _animationController.forward();
-                      },
-                      icon: const Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      ),
-                    ),
+                ActionButtonWidget(
+                  onPressed: () {
+                    swipeNotifier.value = Swipe.right;
+                    _animationController.forward();
+                  },
+                  icon: const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
                   ),
                 ),
               ],
@@ -237,15 +245,12 @@ class _CardStacksWidgetState extends State<CardStacksWidget>
                 return IgnorePointer(
                   child: Container(
                     height: 700.0,
-                    width: 60.0,
+                    width: 80.0,
                     color: Colors.transparent,
                   ),
                 );
               },
               onAccept: (int index) {
-                // setState(() {
-                //   acceptedData += data;
-                // });
                 setState(() {
                   dragabbleItems.removeAt(index);
                 });
@@ -263,15 +268,12 @@ class _CardStacksWidgetState extends State<CardStacksWidget>
                 return IgnorePointer(
                   child: Container(
                     height: 700.0,
-                    width: 60.0,
+                    width: 80.0,
                     color: Colors.transparent,
                   ),
                 );
               },
               onAccept: (int index) {
-                // setState(() {
-                //   acceptedData += data;
-                // });
                 setState(() {
                   dragabbleItems.removeAt(index);
                 });
@@ -517,8 +519,11 @@ class SwipeCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Column(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     'Rohini',
@@ -541,6 +546,7 @@ class SwipeCard extends StatelessWidget {
                   ),
                 ],
               ),
+              ),,
             ),
           ),
         ],
